@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-type Mvdata struct {
+type mvdata struct {
 	Name string
 	Gen  string
 	Cat  string

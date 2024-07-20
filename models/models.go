@@ -22,3 +22,7 @@ type Mvwdata struct {
 	Cat  string
 	Rate int
 }
+
+type Id struct {
+	Movieid int
+}

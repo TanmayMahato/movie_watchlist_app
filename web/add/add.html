@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Watchlist</title>
@@ -84,10 +85,13 @@
     color: #c59b08;
 }
     </style>
+
+<script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script>
+
 </head>
-<body>
+<body >
     <h2>Movie Watchlist</h2>
-    <form hx-post="http://localhost:8040/add_data">
+    <form action="http://localhost:8080/add" method="POST">
         <label for="movie-name">Movie Name</label>
         <input type="text" id="movie-name" name="movie-name" required>
 
@@ -125,7 +129,7 @@
             <label for="star1" title="text">1 star</label>
           </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit" id="btn">Submit</button>
     </form>
 </body>
 </html>
