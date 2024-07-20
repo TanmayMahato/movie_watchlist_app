@@ -4,27 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Watch List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Movie Watch List</h1>
-        <nav>
+    <header class="container">
+        <h1 class="text-center">Movie Watch List</h1>
+        <nav class="text-center">
             <ul>
-                <li><a href="http://localhost:8080/">Home</a></li>
-                <li><a href="http://localhost:8080/add">Add Movie</a></li>
-                <li><a href="http://localhost:8080/find">Find Movie</a></li>
-                <li><a href="http://localhost:8080/edit">Edit Movie</a></li>
-                <li><a href="http://localhost:8080/watched">Watched Movies</a></li>
+                <li><a href="http://localhost:8080/" class="btn btn-primary">Home</a></li>
+                <li><a href="http://localhost:8080/add" class="btn btn-secondary">Add Movie</a></li>
+                <li><a href="http://localhost:8080/find" class="btn btn-success">Find Movie</a></li>
+                <li><a href="http://localhost:8080/edit" class="btn btn-warning">Edit Movie</a></li>
+                <li><a href="http://localhost:8080/watched" class="btn btn-info">Watched Movies</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <h2>Welcome to your Movie Watch List!</h2>
-        <p>Manage your movie collection with ease.</p>
+    <main class="container">
+        <h2 class="text-center">Welcome to your Movie Watch List!</h2>
+        <p class="text-center">Manage your movie collection with ease.</p>
         <!-- Additional content or placeholders can be added here -->
     </main>
-    <footer>
+    <footer class="container">
         <p>&copy; 2024 Your Movie Watch List App</p>
     </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
