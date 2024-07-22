@@ -52,8 +52,10 @@ DB_PASSWORD= "*"                      # MySql Password in place of *            
 Start the application :  
 
 ```sh
-go build -o app cmd/app/main.go
-./app 
+go run cmd/app/main.go
+
 ```
+
+##### The app will be running on localhost port - 8080. Go check it out
 
 ###### *Note - Alter the commands according to your system by referencing the internet, the application is only tested running on Ubuntu 24.04lts and Ubuntu 22.04lts*
