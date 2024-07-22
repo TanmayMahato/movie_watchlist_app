@@ -21,7 +21,7 @@ A movie watchlist **CRUD app** built with **Golang** and it's standard library a
 
 ```sh
 git clone https://github.com/TanmayMahato/movie_watchlist_app.git
-cd movie-watchlist
+cd movie_watchlist_app
 ```
 
 ### Step 2: Create the Database and Tables
@@ -52,7 +52,8 @@ DB_PASSWORD= "*"                      # MySql Password in place of *            
 Start the application :  
 
 ```sh
-go build -o . 
+go build -o app cmd/app/main.go
+./app 
 ```
 
 ###### *Note - Alter the commands according to your system by referencing the internet, the application is only tested running on Ubuntu 24.04lts and Ubuntu 22.04lts*

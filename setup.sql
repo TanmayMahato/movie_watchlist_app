@@ -1,5 +1,5 @@
 
-CREATE DATABASE IF NOT EXISTS movie_watchlist;
+CREATE DATABASE IF NOT EXISTS movieapp;
 
 
 USE movieapp;
