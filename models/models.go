@@ -1,5 +1,9 @@
 package models
 
+import (
+	"database/sql"
+)
+
 type Mvd struct {
 	Name string
 	Gen  string
@@ -20,7 +24,7 @@ type Mvwdata struct {
 	Name string
 	Gen  string
 	Cat  string
-	Rate int
+	Rate sql.NullString
 }
 
 type Id struct {

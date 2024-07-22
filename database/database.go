@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"log"
 
@@ -15,11 +14,6 @@ var db *sql.DB
 // initializes the db
 func DBinit(dsn string) {
 	db, _ = sql.Open("mysql", dsn)
-
-	pingErr := db.Ping()
-	if pingErr != nil {
-		log.Fatal(pingErr)
-	}
 	fmt.Println("Connected to the db!")
 }
 
@@ -27,56 +21,74 @@ func DBinit(dsn string) {
 func DBclose() error {
 	if db != nil {
 		db.Close()
+		fmt.Println(" db closed!")
 		return nil
 	}
-	return errors.New("No database to close")
+	return nil
 }
 
 // func to add a movie in watchlist table .. returns the last inserted mvid no
-func DBinsert(s1 models.Mvd) int {
+func DBinsert(s1 models.Mvd) (int, error) {
 	var ins *sql.Stmt
 	var err2 error
 	ins, err2 = db.Prepare("INSERT INTO `movieapp`.`watchlist`(`name` ,`gen` ,`cat` ,`exp`) VALUES(?,?,?,?);")
 	if err2 != nil {
-		log.Fatal(err2)
+		fmt.Println("Error at dbinsert while prepare ", err2)
+		return 5, err2
 	}
 	defer ins.Close()
 
 	res, err := ins.Exec(s1.Name, s1.Gen, s1.Cat, s1.Exp)
-
 	if err != nil {
-		panic(err.Error())
+		fmt.Println("Error at dbinsert while exec ", err)
+		return 5, err
 	}
-	ls, _ := res.LastInsertId()
+	ls, errl := res.LastInsertId()
+	if errl != nil {
+		fmt.Println("Error at database.DBInsert while lastinsertid ", errl)
+		return int(ls), errl
+	}
 
-	return int(ls)
+	return int(ls), nil
 }
 
 // id = 0 for not all and 1 for select all along with a Mvd struct as input
 // returns the watchlist table rows in a slice also the row gets added to watched table with the trigger in the db
 func DBselect(list models.Mvd, id int) ([]models.Mvdata, error) {
 	var response *sql.Rows
-	if id == 1 && list.Name == "" && list.Gen == "" && list.Cat == "" {
-		response, _ = db.Query("SELECT * FROM `movieapp`.`watchlist`;")
+	var errs error
+	if id == 1 {
+		response, errs = db.Query("SELECT * FROM `movieapp`.`watchlist`;")
+	} else if id == 0 && list.Name == "" && list.Gen == "" && list.Cat == "" {
+		response, errs = db.Query("SELECT * FROM `movieapp`.`watchlist`;")
 	} else if id == 0 && list.Name != "" && list.Gen == "" && list.Cat == "" {
-		response, _ = db.Query("SELECT * FROM `movieapp`.`watchlist` where `name`= ?;", list.Name)
+		name := list.Name + "%"
+		response, errs = db.Query("SELECT * FROM `movieapp`.`watchlist` where `name` LIKE ?;", name)
 	} else if id == 0 && list.Name == "" && list.Gen != "" && list.Cat == "" {
-		response, _ = db.Query("SELECT * FROM `movieapp`.`watchlist` where `gen`= ?;", list.Gen)
+		response, errs = db.Query("SELECT * FROM `movieapp`.`watchlist` where `gen`= ?;", list.Gen)
 	} else if id == 0 && list.Name == "" && list.Gen == "" && list.Cat != "" {
-		response, _ = db.Query("SELECT * FROM `movieapp`.`watchlist` where `cat`= ?;", list.Cat)
+		response, errs = db.Query("SELECT * FROM `movieapp`.`watchlist` where `cat`= ?;", list.Cat)
 	} else {
-		response, _ = db.Query("SELECT * FROM `movieapp`.`watchlist`;")
+		response, errs = db.Query("SELECT * FROM `movieapp`.`watchlist`;")
 	}
+	if errs != nil {
+		return nil, errs
+	}
+	defer response.Close()
 
 	var Arrdata []models.Mvdata
 
 	for response.Next() {
 		var ad models.Mvdata
-		err := response.Scan(&ad.Mvid, &ad.Name, &ad.Gen, &ad.Cat, &ad.Exp)
-		if err != nil {
-			log.Panic(err)
+
+		if err := response.Scan(&ad.Mvid, &ad.Name, &ad.Gen, &ad.Cat, &ad.Exp); err != nil {
+			return Arrdata, err
 		}
 		Arrdata = append(Arrdata, ad)
+
+	}
+	if err := response.Err(); err != nil {
+		return Arrdata, err
 	}
 
 	return Arrdata, nil
@@ -88,16 +100,43 @@ func DBwatchedselect() ([]models.Mvwdata, error) {
 
 	response, _ := db.Query("SELECT * FROM `movieapp`.`watched`;")
 	var Arrdata []models.Mvwdata
+	defer response.Close()
 
 	for response.Next() {
 		var ad models.Mvwdata
 		err := response.Scan(&ad.Mvid, &ad.Name, &ad.Gen, &ad.Cat, &ad.Rate)
 		if err != nil {
-			log.Panic(err)
+			return nil, err
 		}
 		Arrdata = append(Arrdata, ad)
 	}
 
+	return Arrdata, nil
+
+}
+
+// Select with the id
+func DBidselect(i int) ([]models.Mvdata, error) {
+	fmt.Println("Check6 ", i)
+	res := db.QueryRow("SELECT * FROM `movieapp`.`watchlist` where `mvid` = ? ;", i)
+	// if err != nil {
+	// 	fmt.Println("Error at database.DBidselect1", err)
+	// 	return nil, err
+	// }
+	fmt.Println("Check7")
+	var Arrdata []models.Mvdata
+	// defer res.Close()
+
+	fmt.Println("Check8 - one time only")
+	var ad models.Mvdata
+	err := res.Scan(&ad.Mvid, &ad.Name, &ad.Gen, &ad.Cat, &ad.Exp)
+	if err != nil {
+		return nil, err
+	}
+	Arrdata = append(Arrdata, ad)
+	fmt.Println(Arrdata)
+
+	fmt.Println("Check9")
 	return Arrdata, nil
 
 }
