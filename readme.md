@@ -52,8 +52,8 @@ DB_PASSWORD= "*"                      # MySql Password in place of *            
 Start the application :  
 
 ```sh
-cd cmd/app/
-go run main.go
+go run cmd/app/main.go
+
 ```
 
 ##### The app will be running on localhost port - 8080. Go check it out
