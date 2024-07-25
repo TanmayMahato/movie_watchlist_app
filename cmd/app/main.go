@@ -174,7 +174,7 @@ func Getdsn() {
 }
 
 func main() {
-	err := godotenv.Load("../../setup.env")
+	err := godotenv.Load("../../.env")
 	if err != nil {
 		fmt.Println(err)
 	}
