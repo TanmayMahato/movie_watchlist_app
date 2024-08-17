@@ -1,7 +1,7 @@
 # Movie Watchlist CRUD App
 
 A movie watchlist **CRUD app** built with **Golang** and it's standard library along with basic HTML, CSS, Bootstrap and little bit help of HTMX at the Frontend.
-> **Project demo video** - [Youtube Link](https://www.youtube.com/watch?v=cl4dCQGujK8)
+> **Project demo video** - [Youtube Link(img.png)](https://www.youtube.com/watch?v=cl4dCQGujK8)
 
 ## Features
 
